@@ -65,30 +65,37 @@ function Menu() {
 
       {/* using ternarity operator */}
       {pizzas.length > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => {
-            return (
-              <Pizza
-                name={pizza.name}
-                photoName={pizza.photoName}
-                price={pizza.price}
-                ingredients={pizza.ingredients}
-              />
-            );
-          })}
-        </ul>
+        <>
+          <p>
+            The Pizza House in town, we have italian spenish garlic chinese
+            everything you guys want.
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => {
+              return (
+                <Pizza
+                  name={pizza.name}
+                  photoName={pizza.photoName}
+                  price={pizza.price}
+                  ingredients={pizza.ingredients}
+                  soldOut={pizza.soldOut}
+                />
+              );
+            })}
+          </ul>
+        </>
       ) : null}
     </main>
   );
 }
 function Pizza(props) {
   return (
-    <li className="pizza">
+    <li className={`pizza ${props.soldOut ? "sold-out" : ""}`}>
       <img src={props.photoName} alt="#"></img>
       <div>
         <h3>{props.name}</h3>
         <p>{props.ingredients}</p>
-        <span>{props.price}</span>
+        <span>{props.soldOut ? "SOLD OUT" : props.price}</span>
       </div>
     </li>
   );
@@ -103,19 +110,15 @@ function Header() {
 
 function Footer() {
   const hour = new Date().getHours();
-  const openHour = 9;
+  const openHour = 12;
   const closeHour = 22;
-  const isOpen = hour >= openHour && hour <= closeHour;
-
+  console.log(hour);
+  var isOpen = hour >= openHour && hour <= closeHour;
+  isOpen = 1;
   return (
     <footer className="footer">
       {isOpen ? (
-        <div className="order">
-          <p>
-            We are open util {closeHour}:0:0. Come Visit us or Order online!
-          </p>
-          <button className="btn">Order</button>
-        </div>
+        <Order closeHour={closeHour} openHour={openHour} />
       ) : (
         <p>
           We are happy to Welcome you between {openHour} to {closeHour}
@@ -123,6 +126,15 @@ function Footer() {
       )}
       {/* {new Date().toLocaleDateString()}. We're currently open! */}
     </footer>
+  );
+}
+
+function Order({ closeHour, openHour }) {
+  return (
+    <div className="order">
+      <p>We are open util {closeHour}:0:0. Come Visit us or Order online!</p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
